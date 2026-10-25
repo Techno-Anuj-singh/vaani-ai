@@ -179,6 +179,13 @@ app.post("/api/translate", async (req, res) => {
   try {
     const { text, sourceLanguage, targetLanguage } = req.body;
 
+    console.log("Translation API diagnostic:", {
+      httpStatus: response.status,
+      responseStatus: data.responseStatus,
+      responseMessage: data.responseDetails,
+      translatedText: data.responseData?.translatedText,
+    });
+    
     if (!text || !text.trim()) {
       return res.status(400).json({
         error: "No text provided for translation.",
@@ -210,7 +217,7 @@ app.post("/api/translate", async (req, res) => {
     });
 
     const response = await fetch(
-      `https://api.mymemory.translated.net/get?${params}`
+      `https://api.mymemory.translated.net/get?${params.toString()}`
     );
 
     const data = await response.json();
