@@ -175,17 +175,11 @@ const audioBuffer = Buffer.from(await upstream.arrayBuffer());
 });
 
 
+
 app.post("/api/translate", async (req, res) => {
   try {
     const { text, sourceLanguage, targetLanguage } = req.body;
 
-    console.log("Translation API diagnostic:", {
-      httpStatus: response.status,
-      responseStatus: data.responseStatus,
-      responseMessage: data.responseDetails,
-      translatedText: data.responseData?.translatedText,
-    });
-    
     if (!text || !text.trim()) {
       return res.status(400).json({
         error: "No text provided for translation.",
@@ -221,6 +215,13 @@ app.post("/api/translate", async (req, res) => {
     );
 
     const data = await response.json();
+
+    console.log("Translation API diagnostic:", {
+      httpStatus: response.status,
+      responseStatus: data.responseStatus,
+      responseMessage: data.responseDetails,
+      translatedText: data.responseData?.translatedText,
+    });
 
     if (
       !response.ok ||
