@@ -13,7 +13,14 @@ const upload = multer({
   },
 });
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(
+         cors({
+              origin: [
+                  "http://localhost:5173",
+                  "https://vaani-ai.pages.dev",
+                 ],
+               })
+             );
 app.use(express.json());
 
 // Check whether the backend is running
