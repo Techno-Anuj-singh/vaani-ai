@@ -15,8 +15,7 @@ import {
 import "./App.css";
 import "./App-polish-overrides.css";
 
-const API_BASE = "http://localhost:3000";
-
+const API_BASE = "https://vaani-ai-backend-tj8p.onrender.com";
 function audioBufferToWav(buffer) {
   const channels = buffer.numberOfChannels;
   const sampleRate = buffer.sampleRate;
