@@ -223,15 +223,21 @@ app.post("/api/translate", async (req, res) => {
       translatedText: data.responseData?.translatedText,
     });
 
+    if (response.status === 429 || data.responseStatus === 429) {
+      return res.status(429).json({
+        error: "Translation quota exhausted. Please try again later.",
+     });
+    }
+
     if (
       !response.ok ||
       data.responseStatus !== 200 ||
       !data.responseData?.translatedText
     ) {
       return res.status(502).json({
-        error: "Translation failed.",
-      });
-    }
+       error: "Translation failed.",
+     });
+   }
 
     return res.json({
       translatedText: data.responseData.translatedText,
