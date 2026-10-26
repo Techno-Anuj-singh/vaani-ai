@@ -189,11 +189,13 @@ app.post("/api/translate", async (req, res) => {
     const supportedDirections = {
       "hi-IN": {
         target: "en-IN",
-        langpair: "hi|en",
+        source: "hi",
+        destination: "en",
       },
       "en-IN": {
         target: "hi-IN",
-        langpair: "en|hi",
+        source: "en",
+        destination: "hi",
       },
     };
 
@@ -205,42 +207,47 @@ app.post("/api/translate", async (req, res) => {
       });
     }
 
-    const params = new URLSearchParams({
-      q: text.trim(),
-      langpair: direction.langpair,
-    });
+    const scriptUrl = process.env.APPS_SCRIPT_URL;
+    const scriptSecret = process.env.APPS_SCRIPT_SECRET;
 
-    const response = await fetch(
-      `https://api.mymemory.translated.net/get?${params.toString()}`
-    );
+    if (!scriptUrl || !scriptSecret) {
+      console.error("Google Apps Script environment variables are missing.");
+
+      return res.status(500).json({
+        error: "Translation service is not configured.",
+      });
+    }
+
+    const response = await fetch(scriptUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        secret: scriptSecret,
+        q: [text.trim()],
+        source: direction.source,
+        target: direction.destination,
+      }),
+      redirect: "follow",
+    });
 
     const data = await response.json();
 
-    console.log("Translation API diagnostic:", {
-      httpStatus: response.status,
-      responseStatus: data.responseStatus,
-      responseMessage: data.responseDetails,
-      translatedText: data.responseData?.translatedText,
-    });
+    if (!response.ok || data.error || !Array.isArray(data.translations) ||
+        typeof data.translations[0] !== "string") {
+      console.error("Google Apps Script translation failed:", {
+        status: response.status,
+        error: data.error || "Invalid translation response",
+      });
 
-    if (response.status === 429 || data.responseStatus === 429) {
-      return res.status(429).json({
-        error: "Translation quota exhausted. Please try again later.",
-     });
+      return res.status(502).json({
+        error: "Translation failed.",
+      });
     }
 
-    if (
-      !response.ok ||
-      data.responseStatus !== 200 ||
-      !data.responseData?.translatedText
-    ) {
-      return res.status(502).json({
-       error: "Translation failed.",
-     });
-   }
-
     return res.json({
-      translatedText: data.responseData.translatedText,
+      translatedText: data.translations[0],
     });
   } catch (error) {
     console.error("Translation error:", error.message);
