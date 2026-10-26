@@ -1,16 +1,112 @@
-# React + Vite
+# Vaani AI — Real-Time Voice Translation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Vaani AI is a voice-focused translation web application designed to help people communicate across language barriers. It converts spoken Hindi to English and English to Hindi, then plays the translated speech as audio.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Website:** https://vaani-ai.pages.dev/
 
-## React Compiler
+**GitHub Repository:** https://github.com/Techno-Anuj-singh/vaani-ai
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Speech-to-text using the Gnani AI API
+- Hindi-to-English and English-to-Hindi translation
+- Text-to-speech using Gnani AI
+- Voice-focused interface with audio playback
+- Responsive web interface
+- Separate frontend and backend deployments
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+**Frontend**
+- React
+- Vite
+- JavaScript
+- CSS
+
+**Backend**
+- Node.js
+- Express.js
+- Multer for audio uploads
+
+**AI and Translation**
+- Gnani AI Speech-to-Text
+- Gnani AI Text-to-Speech
+- Google Apps Script `LanguageApp` for translation
+
+**Deployment**
+- Cloudflare Pages — frontend
+- Render — backend
+
+## Run Locally
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Techno-Anuj-singh/vaani-ai.git
+cd vaani-ai
+```
+
+### 2. Install frontend dependencies
+
+```bash
+npm install
+```
+
+### 3. Install backend dependencies
+
+```bash
+cd server
+npm install
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file inside the `server` directory:
+
+```env
+GNANI_API_KEY=your_gnani_api_key
+APPS_SCRIPT_URL=your_apps_script_web_app_url
+APPS_SCRIPT_SECRET=your_private_secret
+```
+
+Replace the example values with your own credentials. Never commit actual API keys or secrets to GitHub.
+
+### 5. Start the backend
+
+From the `server` directory, run:
+
+```bash
+npm start
+```
+
+The backend normally runs at `http://localhost:3000`.
+
+### 6. Start the frontend
+
+Open a second terminal, return to the project root, and run:
+
+```bash
+npm run dev
+```
+
+Open the local URL printed by Vite, usually `http://localhost:5173`.
+
+## Security
+
+- API keys and private secrets must remain in environment variables.
+- The `.env` file should not be committed to the repository.
+- The frontend should communicate with the backend rather than exposing the Gnani API key in browser code.
+
+## Future Improvements
+
+- Support for additional languages
+- Improved recording and playback controls
+- Better handling of network errors and service availability
+
+## Author
+
+**Anuj Singh**
+
+GitHub: https://github.com/Techno-Anuj-singh
