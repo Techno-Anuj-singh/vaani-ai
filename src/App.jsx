@@ -672,7 +672,7 @@ async function processRecording(recordedBlob) {
       </section>
 
       <footer className="site-footer">
-        <span className="footer-brand">vaani<span>.</span></span>
+        <span className="footer-brand">vaani by Anuj Singh<span>.</span></span>
         <span>{ui.footer}</span>
         <span className="footer-version">{ui.languages}</span>
       </footer>
